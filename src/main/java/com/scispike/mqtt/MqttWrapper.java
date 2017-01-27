@@ -29,7 +29,7 @@ import com.scispike.callback.EventEmitter;
 import com.scispike.conversation.AuthFunction;
 
 public class MqttWrapper {
-  private static final int MAX_BACKOFF = 3000;
+  private static final int MAX_BACKOFF = 60000;
 
   private static final int MIN_BACKOFF = 100;
 
