@@ -100,8 +100,7 @@ public class MqttWrapper {
       options = buildOptions();
 
     try {
-      IMqttToken token = socketClient.connect(options);
-      token.waitForCompletion();
+      socketClient.connect(options).waitForCompletion();
       System.out.println("Connected ;)");
       emit("socket::connected");
       for(int i = pubs.size();i>0;i--){
@@ -236,8 +235,9 @@ public class MqttWrapper {
     eventEmitters.remove(eventEmitter);
     if (eventEmitters.size() == 0) {
       try {
-        IMqttToken token = socketClient.disconnect();
-        token.waitForCompletion();
+        if(socketClient.isConnected()){
+          socketClient.disconnect().waitForCompletion();
+        }
         backoff = MIN_BACKOFF;
       } catch (MqttException e) {
         if (e.getReasonCode() != MqttException.REASON_CODE_CLIENT_ALREADY_DISCONNECTED
